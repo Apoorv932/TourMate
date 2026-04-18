@@ -1,4 +1,4 @@
-# Airbnb Clone
+# TourMate
 
 A full-stack Airbnb clone with separate frontend and backend services.
 
