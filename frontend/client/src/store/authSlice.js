@@ -65,6 +65,21 @@ const authSlice = createSlice({
         state.errors = action.payload?.errors || ['Login failed'];
       })
 
+      /* --- SIGNUP CASES --- */
+      .addCase(signupUser.pending, (state) => {
+        state.loading = true;
+        state.errors = [];
+      })
+      .addCase(signupUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.isLoggedIn = true;
+        state.user = action.payload.user; // Save user data from signup response
+      })
+      .addCase(signupUser.rejected, (state, action) => {
+        state.loading = false;
+        state.errors = action.payload?.errors || ['Signup failed'];
+      })
+
       /* --- SESSION RESTORE CASES --- */
       .addCase(restoreSession.fulfilled, (state, action) => {
         state.isLoggedIn = action.payload.isLoggedIn;

@@ -1,4 +1,4 @@
-﻿const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const passport = require('passport');
@@ -74,6 +74,7 @@ const authController = {
     body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
     
     async (req, res) => {
+      console.log('Signup request body:', req.body);
       const errors = collectValidationErrors(req);
       if (errors) return res.status(422).json({ message: 'Validation failed', errors });
 
@@ -96,10 +97,22 @@ const authController = {
         });
 
         await user.save();
-        return res.status(201).json({ message: 'Registration successful' });
-      } catch (error) {
-        return res.status(500).json({ message: 'Server error during registration' });
-      }
+
+// Issue JWT and set cookie
+const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
+res.cookie('token', token, { httpOnly: true });
+
+return res.status(201).json({
+  message: 'Registration successful',
+  user: serializeUser(user)
+});
+        } catch (error) {
+          console.error('Registration error details:', error);
+          console.error(error.stack);
+          // Forward the error message if available, otherwise generic
+          const errorMessage = error.message || 'Server error during registration';
+          return res.status(500).json({ message: errorMessage });
+        }
     }
   ],
 

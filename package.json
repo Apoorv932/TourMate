@@ -6,13 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tailwind": "npx @tailwindcss/cli -i ./views/input.css -o ./public/output.css --watch",
-    "dev:backend": "nodemon Backend/server.js",
-    "dev:frontend": "vite --host 0.0.0.0 --port 5173",
-    "dev": "concurrently \"npm:dev:backend\" \"npm:dev:frontend\"",
-    "build:client": "vite build",
-    "start:backend": "node Backend/server.js",
-    "start:frontend": "vite --host 0.0.0.0 --port 5173",
-    "start": "concurrently \"npm:start:backend\" \"npm:start:frontend\""
+    "backend": "nodemon Backend/server.js",
+    "client": "npm --prefix frontend run dev",
+    "dev": "npm run client",
+    "start": "npm run backend",
+    "build:client": "npm --prefix frontend run build"
   },
   "keywords": [],
   "author": "",

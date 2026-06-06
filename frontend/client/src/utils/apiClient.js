@@ -7,7 +7,10 @@ const BASE_URL = 'http://localhost:3001';
 // 2. Create our Axios machine
 const apiClient = axios.create({
   baseURL: `${BASE_URL}/api`,
-  withCredentials: true, // This sends our cookies/session automatically
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 // 3. The main function to talk to the backend

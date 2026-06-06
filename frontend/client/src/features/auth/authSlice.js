@@ -77,7 +77,7 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = 'failed';
-        state.errorMessages = action.payload?.errors || ['Unable to login.'];
+        state.errorMessages = action.payload?.errors || (action.payload?.message ? [action.payload.message] : ['Unable to login.']);
       })
       .addCase(signupUser.pending, (state) => {
         state.status = 'loading';
@@ -88,7 +88,7 @@ const authSlice = createSlice({
       })
       .addCase(signupUser.rejected, (state, action) => {
         state.status = 'failed';
-        state.errorMessages = action.payload?.errors || ['Unable to sign up.'];
+        state.errorMessages = action.payload?.errors || (action.payload?.message ? [action.payload.message] : ['Unable to sign up.']);
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.isLoggedIn = false;
