@@ -15,7 +15,8 @@
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-redux": "^9.2.0",
-    "react-router-dom": "^7.14.0"
+    "react-router-dom": "^7.14.0",
+    "tourmate": "file:.."
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.1",
