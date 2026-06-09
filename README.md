@@ -5,7 +5,7 @@ A full-stack Airbnb clone with separate frontend and backend services.
 ## Project Structure
 
 ```
-airbnb-2/
+tourmate/
 ├── frontend/          # React frontend with Vite
 ├── backend/           # Express.js API server
 └── README.md
@@ -22,7 +22,7 @@ airbnb-2/
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd airbnb-2
+   cd tourmate
    ```
 
 2. **Setup Backend**
