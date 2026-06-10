@@ -9,6 +9,13 @@ const { serializeUser } = require('../utility/serializers');
 const JWT_SECRET = process.env.JWT_SECRET || 'MY_SECRET_KEY';
 const FRONTEND_URL = (process.env.FRONTEND_URL || 'http://localhost:5173').trim().replace(/['"]/g, '').replace(/\r$/, '').replace(/\/$/, '');
 
+const isProduction = process.env.NODE_ENV === 'production' || !FRONTEND_URL.includes('localhost');
+const cookieOptions = {
+  httpOnly: true,
+  secure: isProduction,
+  sameSite: isProduction ? 'none' : 'lax',
+};
+
 // Helper to gather validation errors from express-validator
 function collectValidationErrors(req) {
   const result = validationResult(req);
@@ -56,7 +63,7 @@ const authController = {
 
     // Create JWT and store in an httpOnly cookie for security
     const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
-    res.cookie('token', token, { httpOnly: true });
+    res.cookie('token', token, cookieOptions);
 
     return res.json({
       message: 'Login successful',
@@ -100,7 +107,7 @@ const authController = {
 
 // Issue JWT and set cookie
 const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
-res.cookie('token', token, { httpOnly: true });
+res.cookie('token', token, cookieOptions);
 
 return res.status(201).json({
   message: 'Registration successful',
@@ -118,7 +125,7 @@ return res.status(201).json({
 
   // LOGOUT: Clears the JWT cookie
   logout: (req, res) => {
-    res.clearCookie('token');
+    res.clearCookie('token', cookieOptions);
     res.json({ message: 'Logout successful' });
   },
 
@@ -144,7 +151,7 @@ return res.status(201).json({
 
       // Issue the same JWT as manual login so the app treats the user the same
       const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
-      res.cookie('token', token, { httpOnly: true });
+      res.cookie('token', token, cookieOptions);
 
       // Redirect back to frontend home page
       res.redirect(`${FRONTEND_URL}/?oauth=success`);
