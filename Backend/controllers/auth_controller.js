@@ -7,7 +7,7 @@ const User = require('../models/user');
 const { serializeUser } = require('../utility/serializers');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'MY_SECRET_KEY';
-const FRONTEND_URL = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/$/, '');
+const FRONTEND_URL = (process.env.FRONTEND_URL || 'http://localhost:5173').trim().replace(/['"]/g, '').replace(/\r$/, '').replace(/\/$/, '');
 
 // Helper to gather validation errors from express-validator
 function collectValidationErrors(req) {

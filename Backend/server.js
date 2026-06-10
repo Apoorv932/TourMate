@@ -18,7 +18,7 @@ const rootDir = path.resolve(__dirname);
 const uploadsDir = path.join(rootDir, 'uploads');
 
 const PORT = Number(process.env.PORT || 3001);
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+const FRONTEND_URL = (process.env.FRONTEND_URL || 'http://localhost:5173').trim().replace(/['"]/g, '').replace(/\r$/, '');
 const MONGODB_URL = process.env.MONGODB_URL || 'mongodb://127.0.0.1:27017/tourmate';
 const SESSION_SECRET = process.env.SESSION_SECRET || 'change-this-session-secret';
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
