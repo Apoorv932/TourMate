@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 // 1. Where is the backend?
-// We use localhost:3001 as the default for your machine.
-const BASE_URL = 'http://localhost:3001';
+// We use the new Render deployment as the default backend.
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://tourmate-krrn.onrender.com';
 
 // 2. Create our Axios machine
 const apiClient = axios.create({
