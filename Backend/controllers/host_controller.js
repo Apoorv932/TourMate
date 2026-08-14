@@ -1,20 +1,19 @@
-const Home = require('../models/home');
-const { serializeHome } = require('../utility/serializers');
+const Guide = require('../models/guide');
+const { serializeGuide } = require('../utility/serializers');
 
 const hostController = {
-  // Get all homes for host
-  getHomes: async (req, res) => {
-    const homes = await Home.find().sort({ _id: -1 });
+  // Get all guides for host
+  getGuides: async (req, res) => {
+    const guides = await Guide.find().sort({ _id: -1 });
     return res.json({
-      homes: homes.map(serializeHome),
+      guides: guides.map(serializeGuide),
     });
   },
 
-  // Create new home
-  createHome: async (req, res) => {
-    const { houseName, price, location } = req.body;
+  // Create new guide
+  createGuide: async (req, res) => {
+    const { name, bio, location, pricePerHour, languages, specialties } = req.body;
     const photoFile = req.files?.photo ? req.files.photo[0] : null;
-    const rulesPdfFile = req.files?.rulesPdf ? req.files.rulesPdf[0] : null;
 
     if (!photoFile) {
       return res.status(422).json({
@@ -23,60 +22,61 @@ const hostController = {
       });
     }
 
-    const home = new Home({
-      houseName,
-      price,
+    const guide = new Guide({
+      name,
+      bio,
       location,
+      pricePerHour,
+      languages,
+      specialties,
       photo: photoFile.path,
-      rulesPdf: rulesPdfFile ? rulesPdfFile.path : '',
+      isAvailable: true,
     });
 
-    await home.save();
+    await guide.save();
 
     return res.status(201).json({
-      message: 'Home created successfully',
-      home: serializeHome(home),
+      message: 'Guide created successfully',
+      guide: serializeGuide(guide),
     });
   },
 
-  // Update home
-  updateHome: async (req, res) => {
-    const { houseName, price, location } = req.body;
-    const home = await Home.findById(req.params.homeId);
+  // Update guide
+  updateGuide: async (req, res) => {
+    const { name, bio, location, pricePerHour, languages, specialties } = req.body;
+    const guide = await Guide.findById(req.params.guideId);
 
-    if (!home) {
-      return res.status(404).json({ message: 'Home not found.' });
+    if (!guide) {
+      return res.status(404).json({ message: 'Guide not found.' });
     }
 
-    home.houseName = houseName;
-    home.price = price;
-    home.location = location;
+    guide.name = name;
+    guide.bio = bio;
+    guide.location = location;
+    guide.pricePerHour = pricePerHour;
+    guide.languages = languages;
+    guide.specialties = specialties;
 
     const photoFile = req.files?.photo ? req.files.photo[0] : null;
-    const rulesPdfFile = req.files?.rulesPdf ? req.files.rulesPdf[0] : null;
 
     if (photoFile) {
-      home.photo = photoFile.path;
+      guide.photo = photoFile.path;
     }
 
-    if (rulesPdfFile) {
-      home.rulesPdf = rulesPdfFile.path;
-    }
-
-    await home.save();
+    await guide.save();
 
     return res.json({
-      message: 'Home updated successfully',
-      home: serializeHome(home),
+      message: 'Guide updated successfully',
+      guide: serializeGuide(guide),
     });
   },
 
-  // Delete home
-  deleteHome: async (req, res) => {
-    await Home.findByIdAndDelete(req.params.homeId);
+  // Delete guide
+  deleteGuide: async (req, res) => {
+    await Guide.findByIdAndDelete(req.params.guideId);
 
     return res.json({
-      message: 'Home removed successfully',
+      message: 'Guide removed successfully',
     });
   }
 };

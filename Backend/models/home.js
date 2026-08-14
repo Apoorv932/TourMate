@@ -1,36 +1,21 @@
-const mongoose=require('mongoose');
-const User=require('./user');
+const mongoose = require('mongoose');
 
-const Homeschema= new mongoose.Schema({
-     houseName:{type: String, required:true},
-    price:{type: Number, required:true},
-         location:{type: String, required:true},
-              photo:{type: String, },
-              rulesPdf:{type:String}
-   
-
-})
-Homeschema.pre('findOneAndDelete', async function (next) {
-  const homeId = this.getQuery()._id; // home id being deleted
-  
-  try {
-    // Remove the home id from all users' favourites
-    await User.updateMany(
-      { favourites: homeId },
-      { $pull: { favourites: homeId } }
-    );
-
-    next();
-  } catch (error) {
-    next(error); // pass error to next so it's handled properly
-  }
+const GuideSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  bio: { type: String },
+  location: { type: String, required: true },
+  pricePerHour: { type: Number, required: true },
+  languages: [{ type: String }],
+  specialties: [{ type: String }],
+  photo: { type: String },
+  isAvailable: { type: Boolean, default: true },
 });
 
-const Home=mongoose.model('Home',Homeschema);
+// Index for search filters
+GuideSchema.index({ location: 1, isAvailable: 1 });
 
-
-
-module.exports=Home;
+const Guide = mongoose.model('Guide', GuideSchema);
+module.exports = Guide;
 
 
 

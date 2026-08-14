@@ -1,10 +1,40 @@
-﻿const express = require('express');
+const express = require('express');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
-const Home = require('../models/home');
+const Guide = require('../models/guide');
+
+// ... keep User import if needed
+
+// Public routes for guides
+apiRouter.get('/guides', async (_req, res) => {
+  if (!isDatabaseReady()) {
+    return databaseUnavailable(res);
+  }
+
+  const guides = await Guide.find().sort({ _id: -1 });
+  return res.json({
+    guides: guides.map(serializeGuide),
+  });
+});
+
+apiRouter.get('/guides/:guideId', async (req, res) => {
+  if (!isDatabaseReady()) {
+    return databaseUnavailable(res);
+  }
+
+  const guide = await Guide.findById(req.params.guideId);
+
+  if (!guide) {
+    return res.status(404).json({ message: 'Guide not found.' });
+  }
+
+  return res.json({
+    guide: serializeGuide(guide),
+  });
+});
 const User = require('../models/user');
-const { serializeHome, serializeUser } = require('../utility/serializers');
+const { serializeGuide, serializeUser } = require('../utility/serializers');
 
 // Import separate routers
 const authRouter = require('./auth_router');
@@ -60,32 +90,7 @@ apiRouter.get('/session', async (req, res) => {
 });
 
 // Public routes for homes
-apiRouter.get('/homes', async (_req, res) => {
-  if (!isDatabaseReady()) {
-    return databaseUnavailable(res);
-  }
 
-  const homes = await Home.find().sort({ _id: -1 });
-  return res.json({
-    homes: homes.map(serializeHome),
-  });
-});
-
-apiRouter.get('/homes/:homeId', async (req, res) => {
-  if (!isDatabaseReady()) {
-    return databaseUnavailable(res);
-  }
-
-  const home = await Home.findById(req.params.homeId);
-
-  if (!home) {
-    return res.status(404).json({ message: 'Home not found.' });
-  }
-
-  return res.json({
-    home: serializeHome(home),
-  });
-});
 
 // Mount sub-routers
 apiRouter.use('/auth', authRouter);

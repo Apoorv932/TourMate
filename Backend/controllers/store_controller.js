@@ -1,5 +1,6 @@
 const User = require('../models/user');
-const { serializeHome, serializeUser } = require('../utility/serializers');
+const Booking = require('../models/booking');
+const { serializeGuide, serializeUser, serializeBooking } = require('../utility/serializers');
 
 const storeController = {
   // Get user favourites
@@ -7,7 +8,7 @@ const storeController = {
     const user = await User.findById(req.userId).populate('favourites');
 
     return res.json({
-      homes: user.favourites.map(serializeHome),
+      guides: user.favourites.map(serializeGuide),
     });
   },
 
@@ -29,7 +30,7 @@ const storeController = {
   // Remove from favourites
   removeFavourite: async (req, res) => {
     const user = await User.findById(req.userId);
-    user.favourites = user.favourites.filter((id) => id.toString() !== req.params.homeId);
+    user.favourites = user.favourites.filter((id) => id.toString() !== req.params.guideId);
     await user.save();
 
     return res.json({
@@ -39,9 +40,8 @@ const storeController = {
 
   // Get user bookings
   getBookings: async (req, res) => {
-    return res.json({
-      bookings: [],
-    });
+    const bookings = await Booking.find({ userId: req.userId }).populate('guideId');
+    return res.json({ bookings: bookings.map(serializeBooking) });
   },
 
   // Get user profile

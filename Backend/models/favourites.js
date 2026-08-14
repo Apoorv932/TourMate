@@ -1,9 +1,9 @@
 const mongoose=require('mongoose');
 const favSchema=new mongoose.Schema({
-  homeid:{
+  guideId:{
     type:mongoose.Schema.Types.ObjectId,
-    ref:'Home',
-    require:true,
+    ref:'Guide',
+    required:true,
     unique:true
   }
 })

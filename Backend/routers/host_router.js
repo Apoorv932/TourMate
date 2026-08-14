@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const hostController = require('../controllers/host_controller');
 
 const hostRouter = express.Router();
@@ -30,16 +30,16 @@ const requireHost = async (req, res, next) => {
   }
 };
 
-// Get all homes for host
-hostRouter.get('/homes', requireHost, hostController.getHomes);
+// Get all guides for host
+hostRouter.get('/guides', requireHost, hostController.getGuides);
 
-// Create new home
-hostRouter.post('/homes', requireHost, hostController.createHome);
+// Create new guide
+hostRouter.post('/guides', requireHost, hostController.createGuide);
 
-// Update home
-hostRouter.put('/homes/:homeId', requireHost, hostController.updateHome);
+// Update guide
+hostRouter.put('/guides/:guideId', requireHost, hostController.updateGuide);
 
-// Delete home
-hostRouter.delete('/homes/:homeId', requireHost, hostController.deleteHome);
+// Delete guide
+hostRouter.delete('/guides/:guideId', requireHost, hostController.deleteGuide);
 
 module.exports = hostRouter;
