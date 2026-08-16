@@ -1,36 +1,18 @@
-const express = require('express');
-const storeController = require('../controllers/store_controller');
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import storeController from '../controllers/store_controller.js';
+import bookingController from '../controllers/booking_controller.js';
 
 const storeRouter = express.Router();
 
 // Middleware to check authentication
 const requireAuth = (req, res, next) => {
-  const jwt = require('jsonwebtoken');
-
-  const token = req.cookies.token || req.headers.authorization?.replace('Bearer ', '');
+  const token = req.cookies?.token || req.headers.authorization?.replace('Bearer ', '');
 
   if (!token) {
     return res.status(401).json({ message: 'Authentication required.' });
   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'MY_SECRET_KEY');
-    req.userId = decoded.userId;
-    return next();
-  } catch (err) {
-    return res.status(401).json({ message: 'Invalid or expired token.' });
-const express = require('express');
-const storeController = require('../controllers/store_controller');
-
-const storeRouter = express.Router();
-
-// Middleware to check authentication
-const requireAuth = (req, res, next) => {
-  const jwt = require('jsonwebtoken');
-  const token = req.cookies.token || req.headers.authorization?.replace('Bearer ', '');
-  if (!token) {
-    return res.status(401).json({ message: 'Authentication required.' });
-  }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'MY_SECRET_KEY');
     req.userId = decoded.userId;
@@ -49,10 +31,12 @@ storeRouter.post('/favourites', requireAuth, storeController.addFavourite);
 // Remove from favourites (guideId param)
 storeRouter.delete('/favourites/:guideId', requireAuth, storeController.removeFavourite);
 
-// Get user bookings
-storeRouter.get('/bookings', requireAuth, storeController.getBookings);
+// User bookings
+storeRouter.get('/bookings', requireAuth, bookingController.listUserBookings);
+storeRouter.post('/bookings', requireAuth, bookingController.createBooking);
+storeRouter.delete('/bookings/:bookingId', requireAuth, bookingController.cancelBooking);
 
 // Get user profile
 storeRouter.get('/profile', requireAuth, storeController.getProfile);
 
-module.exports = storeRouter;
+export default storeRouter;

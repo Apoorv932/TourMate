@@ -1,10 +1,17 @@
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 
-const Guide = require('../models/guide');
+import Guide from '../models/guide.js';
+import User from '../models/user.js';
+import { serializeGuide, serializeUser } from '../utility/serializers.js';
 
-// ... keep User import if needed
+// Import separate routers
+import authRouter from './auth_router.js';
+import hostRouter from './host_router.js';
+import storeRouter from './store_router.js';
+
+const apiRouter = express.Router();
 
 // Public routes for guides
 apiRouter.get('/guides', async (_req, res) => {
@@ -33,15 +40,6 @@ apiRouter.get('/guides/:guideId', async (req, res) => {
     guide: serializeGuide(guide),
   });
 });
-const User = require('../models/user');
-const { serializeGuide, serializeUser } = require('../utility/serializers');
-
-// Import separate routers
-const authRouter = require('./auth_router');
-const hostRouter = require('./host_router');
-const storeRouter = require('./store_router');
-
-const apiRouter = express.Router();
 
 function isDatabaseReady() {
   return mongoose.connection.readyState === 1;
@@ -59,7 +57,7 @@ async function getCurrentUser(req) {
     return null;
   }
 
-  const token = req.cookies.token || req.headers.authorization?.replace('Bearer ', '');
+  const token = req.cookies?.token || req.headers.authorization?.replace('Bearer ', '');
   if (!token) {
     return null;
   }
@@ -89,12 +87,9 @@ apiRouter.get('/session', async (req, res) => {
   });
 });
 
-// Public routes for homes
-
-
 // Mount sub-routers
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/host', hostRouter);
 apiRouter.use('/', storeRouter);
 
-module.exports = apiRouter;
+export default apiRouter;

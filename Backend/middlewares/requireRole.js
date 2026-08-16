@@ -1,4 +1,4 @@
-module.exports = function requireRole(...allowedRoles) {
+export default function requireRole(...allowedRoles) {
   return (req, res, next) => {
     const userRole = req.user?.role;
     if (!userRole || !allowedRoles.includes(userRole)) {
@@ -6,4 +6,4 @@ module.exports = function requireRole(...allowedRoles) {
     }
     next();
   };
-};
+}

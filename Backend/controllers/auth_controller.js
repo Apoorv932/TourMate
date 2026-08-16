@@ -1,10 +1,10 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { body, validationResult } = require('express-validator');
-const passport = require('passport');
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { body, validationResult } from 'express-validator';
+import passport from 'passport';
 
-const User = require('../models/user');
-const { serializeUser } = require('../utility/serializers');
+import User from '../models/user.js';
+import { serializeUser } from '../utility/serializers.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'MY_SECRET_KEY';
 const FRONTEND_URL = (process.env.FRONTEND_URL || 'http://localhost:5173').trim().replace(/['"]/g, '').replace(/\r$/, '').replace(/\/$/, '');
@@ -105,21 +105,21 @@ const authController = {
 
         await user.save();
 
-// Issue JWT and set cookie
-const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
-res.cookie('token', token, cookieOptions);
+        // Issue JWT and set cookie
+        const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
+        res.cookie('token', token, cookieOptions);
 
-return res.status(201).json({
-  message: 'Registration successful',
-  user: serializeUser(user)
-});
-        } catch (error) {
-          console.error('Registration error details:', error);
-          console.error(error.stack);
-          // Forward the error message if available, otherwise generic
-          const errorMessage = error.message || 'Server error during registration';
-          return res.status(500).json({ message: errorMessage });
-        }
+        return res.status(201).json({
+          message: 'Registration successful',
+          user: serializeUser(user)
+        });
+      } catch (error) {
+        console.error('Registration error details:', error);
+        console.error(error.stack);
+        // Forward the error message if available, otherwise generic
+        const errorMessage = error.message || 'Server error during registration';
+        return res.status(500).json({ message: errorMessage });
+      }
     }
   ],
 
@@ -159,4 +159,4 @@ return res.status(201).json({
   }
 };
 
-module.exports = authController;
+export default authController;

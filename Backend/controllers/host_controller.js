@@ -1,5 +1,5 @@
-const Guide = require('../models/guide');
-const { serializeGuide } = require('../utility/serializers');
+import Guide from '../models/guide.js';
+import { serializeGuide } from '../utility/serializers.js';
 
 const hostController = {
   // Get all guides for host
@@ -81,4 +81,4 @@ const hostController = {
   }
 };
 
-module.exports = hostController;
+export default hostController;

@@ -1,14 +1,15 @@
-const mongoose=require('mongoose');
-const favSchema=new mongoose.Schema({
-  guideId:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:'Guide',
-    required:true,
-    unique:true
+import mongoose from 'mongoose';
+
+const favSchema = new mongoose.Schema({
+  guideId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Guide',
+    required: true,
+    unique: true
   }
-})
-const Fab=new mongoose.model('Fab',favSchema);
-module.exports=Fab;
+});
+const Fab = mongoose.model('Fab', favSchema);
+export default Fab;
 
 //  module.exports=class Fab{
 //    constructor(homeid){

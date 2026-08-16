@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const GuideSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -11,4 +11,4 @@ const GuideSchema = new mongoose.Schema({
   isAvailable: { type: Boolean, default: true }
 });
 
-module.exports = mongoose.model('Guide', GuideSchema);
+export default mongoose.model('Guide', GuideSchema);

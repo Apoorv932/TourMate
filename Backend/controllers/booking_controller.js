@@ -1,6 +1,6 @@
-const Booking = require('../models/booking');
-const Guide = require('../models/guide');
-const { serializeBooking } = require('../utility/serializers');
+import Booking from '../models/booking.js';
+import Guide from '../models/guide.js';
+import { serializeBooking } from '../utility/serializers.js';
 
 const bookingController = {
   // Create a new booking if guide is available on requested date
@@ -9,10 +9,10 @@ const bookingController = {
     if (!guideId || !date) {
       return res.status(400).json({ message: 'guideId and date are required.' });
     }
-    const bookingDate = new Date(date);
-    // Normalize to start of day
-    const startOfDay = new Date(bookingDate.setHours(0, 0, 0, 0));
-    const endOfDay = new Date(bookingDate.setHours(24, 0, 0, 0));
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(startOfDay);
+    endOfDay.setDate(endOfDay.getDate() + 1);
 
     const conflict = await Booking.findOne({
       guideId,
@@ -62,4 +62,4 @@ const bookingController = {
   },
 };
 
-module.exports = bookingController;
+export default bookingController;

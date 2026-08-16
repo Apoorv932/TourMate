@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const BookingSchema = new mongoose.Schema({
   guideId: { type: mongoose.Schema.Types.ObjectId, ref: 'Guide', required: true },
@@ -11,4 +11,4 @@ const BookingSchema = new mongoose.Schema({
 // Index for date‑only availability (unique per guide per day)
 BookingSchema.index({ guideId: 1, date: 1 }, { unique: true });
 
-module.exports = mongoose.model('Booking', BookingSchema);
+export default mongoose.model('Booking', BookingSchema);

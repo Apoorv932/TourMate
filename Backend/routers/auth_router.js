@@ -1,5 +1,5 @@
-﻿const express = require('express');
-const authController = require('../controllers/auth_controller');
+import express from 'express';
+import authController from '../controllers/auth_controller.js';
 
 const authRouter = express.Router();
 
@@ -22,4 +22,4 @@ authRouter.post('/logout', authController.logout);
 authRouter.get('/google', authController.googleAuth);
 authRouter.get('/google/callback', authController.googleCallback);
 
-module.exports = authRouter;
+export default authRouter;

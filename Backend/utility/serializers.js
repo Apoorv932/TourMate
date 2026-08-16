@@ -3,12 +3,12 @@ const BACKEND_URL = (process.env.PUBLIC_BACKEND_URL || process.env.BACKEND_URL |
 function toPublicPath(filePath) {
   if (!filePath) return '';
   const normalized = filePath.replace(/\\\\/g, '/');
-  if (/^https?:\\/\\//i.test(normalized)) return normalized;
+  if (/^https?:\/\//i.test(normalized)) return normalized;
   const relativePath = normalized.startsWith('/') ? normalized : `/${normalized}`;
   return `${BACKEND_URL}${relativePath}`;
 }
 
-function serializeGuide(guide) {
+export function serializeGuide(guide) {
   if (!guide) return null;
   return {
     id: guide._id.toString(),
@@ -23,7 +23,7 @@ function serializeGuide(guide) {
   };
 }
 
-function serializeUser(user) {
+export function serializeUser(user) {
   if (!user) return null;
   return {
     id: user._id.toString(),
@@ -37,7 +37,7 @@ function serializeUser(user) {
   };
 }
 
-function serializeBooking(booking) {
+export function serializeBooking(booking) {
   if (!booking) return null;
   return {
     id: booking._id.toString(),
@@ -48,7 +48,7 @@ function serializeBooking(booking) {
   };
 }
 
-module.exports = {
+export default {
   serializeGuide,
   serializeUser,
   serializeBooking,

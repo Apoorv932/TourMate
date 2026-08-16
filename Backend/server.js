@@ -1,18 +1,22 @@
-const path = require('path');
+import path from 'path';
+import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+import express from 'express';
+import session from 'express-session';
+import multer from 'multer';
+import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import passport from 'passport';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
-require('dotenv').config({ path: path.join(__dirname, '.env') });
+import apiRouter from './routers/api_router.js';
+import User from './models/user.js';
 
-const express = require('express');
-const session = require('express-session');
-const multer = require('multer');
-const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const apiRouter = require('./routers/api_router');
-const User = require('./models/user');
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 const rootDir = path.resolve(__dirname);
 const uploadsDir = path.join(rootDir, 'uploads');

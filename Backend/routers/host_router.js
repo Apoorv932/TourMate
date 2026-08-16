@@ -1,14 +1,13 @@
-const express = require('express');
-const hostController = require('../controllers/host_controller');
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import hostController from '../controllers/host_controller.js';
+import User from '../models/user.js';
 
 const hostRouter = express.Router();
 
 // Middleware to check if user is host
 const requireHost = async (req, res, next) => {
-  const jwt = require('jsonwebtoken');
-  const User = require('../models/user');
-
-  const token = req.cookies.token || req.headers.authorization?.replace('Bearer ', '');
+  const token = req.cookies?.token || req.headers.authorization?.replace('Bearer ', '');
 
   if (!token) {
     return res.status(401).json({ message: 'Authentication required.' });
@@ -18,9 +17,9 @@ const requireHost = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'MY_SECRET_KEY');
     req.userId = decoded.userId;
 
-    // Check if user is host
+    // Check if user is host/guide
     const user = await User.findById(decoded.userId);
-    if (user && user.role === 'host') {
+    if (user && (user.role === 'host' || user.role === 'guide')) {
       return next();
     } else {
       return res.status(403).json({ message: 'Host access required.' });
@@ -42,4 +41,4 @@ hostRouter.put('/guides/:guideId', requireHost, hostController.updateGuide);
 // Delete guide
 hostRouter.delete('/guides/:guideId', requireHost, hostController.deleteGuide);
 
-module.exports = hostRouter;
+export default hostRouter;

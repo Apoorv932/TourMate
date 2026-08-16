@@ -1,11 +1,14 @@
-const User = require('../models/user');
-const Booking = require('../models/booking');
-const { serializeGuide, serializeUser, serializeBooking } = require('../utility/serializers');
+import User from '../models/user.js';
+import Booking from '../models/booking.js';
+import { serializeGuide, serializeUser, serializeBooking } from '../utility/serializers.js';
 
 const storeController = {
   // Get user favourites
   getFavourites: async (req, res) => {
     const user = await User.findById(req.userId).populate('favourites');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
     return res.json({
       guides: user.favourites.map(serializeGuide),
@@ -16,6 +19,9 @@ const storeController = {
   addFavourite: async (req, res) => {
     const { id } = req.body;
     const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
     if (!user.favourites.some((favouriteId) => favouriteId.toString() === id)) {
       user.favourites.push(id);
@@ -30,6 +36,10 @@ const storeController = {
   // Remove from favourites
   removeFavourite: async (req, res) => {
     const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
     user.favourites = user.favourites.filter((id) => id.toString() !== req.params.guideId);
     await user.save();
 
@@ -47,10 +57,14 @@ const storeController = {
   // Get user profile
   getProfile: async (req, res) => {
     const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
     return res.json({
       user: serializeUser(user),
     });
   }
 };
 
-module.exports = storeController;
+export default storeController;
