@@ -10,5 +10,6 @@ const GuideSchema = new mongoose.Schema({
   photo: { type: String },
   isAvailable: { type: Boolean, default: true }
 });
+GuideSchema.index({ location: 1, isAvailable: 1 });
 
 export default mongoose.model('Guide', GuideSchema);

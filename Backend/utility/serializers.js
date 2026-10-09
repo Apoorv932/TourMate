@@ -37,7 +37,7 @@ export function serializeUser(user) {
   };
 }
 
-export function serializeBooking(booking) {
+export const serializeBooking=(booking)=> {
   if (!booking) return null;
   return {
     id: booking._id.toString(),

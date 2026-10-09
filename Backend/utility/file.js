@@ -1,7 +1,8 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import __dirname from './path.js';
 
-exports.deletefiles = (relativePath) => {
+export const deletefiles = (relativePath) => {
   if (!relativePath) return;
 
   const absolutePath = path.join(__dirname, '..', relativePath); // Adjust relative path
