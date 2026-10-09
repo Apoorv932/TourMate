@@ -36,7 +36,7 @@ export default function AppNavbar() {
             <>
               <li>
                 <NavLink to="/homes" className={({ isActive }) => navClass(isActive, isDark)}>
-                  Homes
+                  Tour Guides
                 </NavLink>
               </li>
               <li>
@@ -49,16 +49,16 @@ export default function AppNavbar() {
                   Favourites
                 </NavLink>
               </li>
-              {user?.role === 'host' ? (
+              {user?.role === 'host' || user?.role === 'guide' ? (
                 <>
                   <li>
                     <NavLink to="/host/host-homelist" className={({ isActive }) => navClass(isActive, isDark)}>
-                      Host Homelist
+                      My Guide Listings
                     </NavLink>
                   </li>
                   <li>
                     <NavLink to="/host/add-home" className={({ isActive }) => navClass(isActive, isDark)}>
-                      Add Home
+                      Add Guide
                     </NavLink>
                   </li>
                 </>

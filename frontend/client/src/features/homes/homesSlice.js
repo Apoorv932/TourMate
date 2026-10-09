@@ -4,7 +4,8 @@ import { apiRequest, makeFormData } from '@/utils/apiClient';
 
 export const fetchHomes = createAsyncThunk('homes/fetchHomes', async (_, { rejectWithValue }) => {
   try {
-    return await apiRequest('/homes');
+    const res = await apiRequest('/guides').catch(() => apiRequest('/homes'));
+    return { homes: res.guides || res.homes || [] };
   } catch (error) {
     return rejectWithValue(error);
   }
@@ -12,7 +13,8 @@ export const fetchHomes = createAsyncThunk('homes/fetchHomes', async (_, { rejec
 
 export const fetchHomeDetail = createAsyncThunk('homes/fetchHomeDetail', async (homeId, { rejectWithValue }) => {
   try {
-    return await apiRequest(`/homes/${homeId}`);
+    const res = await apiRequest(`/guides/${homeId}`).catch(() => apiRequest(`/homes/${homeId}`));
+    return { home: res.guide || res.home || res };
   } catch (error) {
     return rejectWithValue(error);
   }

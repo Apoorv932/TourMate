@@ -18,7 +18,7 @@ export default function HomesPage() {
   return (
     <main className="container mx-auto mt-10 max-w-xl p-8">
       <PageCard className="p-8">
-        <h2 className="mb-6 text-center text-3xl font-bold text-yellow-600">Here are our registered tours:</h2>
+        <h2 className="mb-6 text-center text-3xl font-bold text-yellow-600">Here are our registered tour guides:</h2>
         <ErrorAlert messages={errorMessage ? [errorMessage] : []} />
         <HomesGrid
           homes={homes}

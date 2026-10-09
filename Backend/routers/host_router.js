@@ -29,16 +29,16 @@ const requireHost = async (req, res, next) => {
   }
 };
 
-// Get all guides for host
-hostRouter.get('/guides', requireHost, hostController.getGuides);
+// Get all guides/homes for host
+hostRouter.get(['/guides', '/homes'], requireHost, hostController.getGuides);
 
-// Create new guide
-hostRouter.post('/guides', requireHost, hostController.createGuide);
+// Create new guide/home
+hostRouter.post(['/guides', '/homes'], requireHost, hostController.createGuide);
 
-// Update guide
-hostRouter.put('/guides/:guideId', requireHost, hostController.updateGuide);
+// Update guide/home
+hostRouter.put(['/guides/:guideId', '/homes/:guideId'], requireHost, hostController.updateGuide);
 
-// Delete guide
-hostRouter.delete('/guides/:guideId', requireHost, hostController.deleteGuide);
+// Delete guide/home
+hostRouter.delete(['/guides/:guideId', '/homes/:guideId'], requireHost, hostController.deleteGuide);
 
 export default hostRouter;

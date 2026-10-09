@@ -14,14 +14,14 @@ export default function HomeCard({
 
   return (
     <div className="overflow-hidden rounded-xl bg-gray-100 shadow-md transition duration-300 hover:shadow-lg">
-      <img src={home.photo} alt={home.houseName} className="h-48 w-full object-cover" />
+      <img src={home.photo || home.photoUrl} alt={home.name || home.houseName} className="h-48 w-full object-cover" />
       <div className="p-4">
-        <h3 className="mb-2 text-xl font-semibold text-yellow-600">{home.houseName}</h3>
+        <h3 className="mb-2 text-xl font-semibold text-yellow-600">{home.name || home.houseName}</h3>
         <p className="mb-1 text-gray-700">
           <strong>Location:</strong> {home.location}
         </p>
         <p className="text-gray-700">
-          <strong>Price:</strong> Rs {formatPrice(home.price)} / night
+          <strong>Price:</strong> Rs {formatPrice(home.pricePerHour || home.price)} / hr
         </p>
 
         {showFavouriteButton ? (

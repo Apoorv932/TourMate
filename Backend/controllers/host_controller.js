@@ -5,8 +5,10 @@ const hostController = {
   // Get all guides for host
   getGuides: async (req, res) => {
     const guides = await Guide.find().sort({ _id: -1 });
+    const serialized = guides.map(serializeGuide);
     return res.json({
-      guides: guides.map(serializeGuide),
+      guides: serialized,
+      homes: serialized,
     });
   },
 

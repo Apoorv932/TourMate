@@ -84,7 +84,7 @@ export default function SignupPage() {
             Sign up as
           </option>
           <option value="guest">Guest</option>
-          <option value="host">Host</option>
+          <option value="guide">Guide</option>
         </select>
         <label className="flex items-center text-sm text-gray-600">
           <input
