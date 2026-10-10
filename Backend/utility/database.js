@@ -1,7 +1,7 @@
 import mongodb from "mongodb";
 const MongoClient = mongodb.MongoClient;
 
-const url = "mongodb+srv://apoorvsinghyadav137:%40Soli932@nehal.a50gmo4.mongodb.net/?retryWrites=true&w=majority&appName=Nehal";
+const url = process.env.MONGO_URI;
 
 let _db;
 async function mongoConnect() {
